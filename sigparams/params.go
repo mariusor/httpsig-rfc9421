@@ -37,4 +37,6 @@ type Params struct {
 	Created time.Time
 
 	Expires time.Time
+
+	SortOrder []string
 }

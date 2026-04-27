@@ -20,11 +20,32 @@ func FuzzMarshal(f *testing.F) {
 	}
 	f.Fuzz(func(t *testing.T, keyID, tag, alg, coveredComponents, nonce, created, expires string) {
 
+		sortOrder := make([]string, 0, 6)
+		if alg != "" {
+			sortOrder = append(sortOrder, "alg")
+		}
+		if created != "" {
+			sortOrder = append(sortOrder, "created")
+		}
+		if expires != "" {
+			sortOrder = append(sortOrder, "expires")
+		}
+		if keyID != "" {
+			sortOrder = append(sortOrder, "keyid")
+		}
+		if nonce != "" {
+			sortOrder = append(sortOrder, "nonce")
+		}
+		if tag != "" {
+			sortOrder = append(sortOrder, "tag")
+		}
 		p := Params{
 			KeyID:             keyID,
 			Tag:               tag,
 			Alg:               alg,
 			CoveredComponents: strings.Split(coveredComponents, ","),
+			Nonce:             nonce,
+			SortOrder:         sortOrder,
 		}
 
 		createdTs, err := strconv.ParseInt(created, 10, 0)

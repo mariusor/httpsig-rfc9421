@@ -25,16 +25,18 @@ func TestParams_UnmarshalInnerList(t *testing.T) {
 				Alg:               "ecdsa-p256-sha256",
 				CoveredComponents: []string{"@method", "@target-uri"},
 				Created:           time.Date(2024, 01, 03, 04, 05, 06, 00, time.FixedZone("GMT", 0)),
+				SortOrder:         []string{"keyid", "alg", "tag", "created"},
 			},
 		},
 		{
 			name:  "empty covered components",
 			input: `();keyid="testkey-123";alg="ecdsa-p256-sha256";tag="foo";created=1704254706`,
 			want: Params{
-				KeyID:   "testkey-123",
-				Tag:     "foo",
-				Alg:     "ecdsa-p256-sha256",
-				Created: time.Date(2024, 01, 03, 04, 05, 06, 00, time.FixedZone("GMT", 0)),
+				KeyID:     "testkey-123",
+				Tag:       "foo",
+				Alg:       "ecdsa-p256-sha256",
+				Created:   time.Date(2024, 01, 03, 04, 05, 06, 00, time.FixedZone("GMT", 0)),
+				SortOrder: []string{"keyid", "alg", "tag", "created"},
 			},
 		},
 	}

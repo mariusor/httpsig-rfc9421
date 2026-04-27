@@ -2,9 +2,12 @@ package sigparams
 
 import "github.com/dunglas/httpsfv"
 
+// defaultSort uses the order shown in the initial contents for the "HTTP Signature Metadata Parameters" registry
+// https://www.rfc-editor.org/rfc/rfc9421.html#name-initial-contents-2
 var defaultSort = []string{"alg", "created", "expires", "keyid", "nonce", "tag"}
 
-// SFV converts the params to a HTTP structured field value.
+// SFV converts the params to an HTTP structured field value sorting them based on the SortOrder list.
+// If there aren't any, the defaultSort will be used.
 func (p Params) SFV() *httpsfv.InnerList {
 	// Construct the Signature Parameters field (@signature-params)
 	// See: https://www.rfc-editor.org/rfc/rfc9421.html#section-2.3
@@ -17,9 +20,10 @@ func (p Params) SFV() *httpsfv.InnerList {
 		sigParams.Items[i] = httpsfv.NewItem(cc)
 	}
 
-	// Using the sort order shown in the initial contents for the "HTTP Signature Metadata Parameters" registry
-	// https://www.rfc-editor.org/rfc/rfc9421.html#name-initial-contents-2
-	for _, param := range defaultSort {
+	if len(p.SortOrder) == 0 {
+		p.SortOrder = defaultSort
+	}
+	for _, param := range p.SortOrder {
 		var val any
 		switch param {
 		case "alg":
