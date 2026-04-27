@@ -31,10 +31,11 @@ func TestBase_CanonicalString(t *testing.T) {
 				Alg:               "ecdsa-p256-sha256",
 				Tag:               "example-app",
 				Created:           time.Date(2024, 01, 03, 04, 05, 06, 00, time.UTC),
+				SortOrder:         []string{"alg", "keyid", "created"},
 			},
 			want: `"@method": POST
 "@target-uri": https://example.com
-"@signature-params": ("@method" "@target-uri");keyid="testkey-123";alg="ecdsa-p256-sha256";tag="example-app";created=1704254706`,
+"@signature-params": ("@method" "@target-uri");alg="ecdsa-p256-sha256";created=1704254706;keyid="testkey-123";tag="example-app"`,
 		},
 		{
 			name: "with_headers",

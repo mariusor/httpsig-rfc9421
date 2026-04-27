@@ -23,6 +23,7 @@ func UnmarshalInnerList(input httpsfv.InnerList) (*Params, error) {
 			p.CoveredComponents[i] = str
 		}
 	}
+	p.SortOrder = input.Params.Names()
 
 	p.Alg, err = getOptionalString(input.Params, "alg")
 	if err != nil {

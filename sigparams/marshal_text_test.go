@@ -22,7 +22,7 @@ func TestSigner_marshalText(t *testing.T) {
 				Tag:     "example-app",
 				Created: time.Date(2024, 01, 03, 04, 05, 06, 00, time.UTC),
 			},
-			want: `();keyid="testkey-123";alg="ecdsa-p256-sha256";tag="example-app";created=1704254706`,
+			want: `();alg="ecdsa-p256-sha256";created=1704254706;keyid="testkey-123";tag="example-app"`,
 		},
 		{
 			name: "with_no_alg",
