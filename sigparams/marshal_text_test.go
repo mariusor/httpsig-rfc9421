@@ -31,7 +31,7 @@ func TestSigner_marshalText(t *testing.T) {
 				Tag:     "example-app",
 				Created: time.Date(2024, 01, 03, 04, 05, 06, 00, time.UTC),
 			},
-			want: `();keyid="testkey-123";tag="example-app";created=1704254706`,
+			want: `();created=1704254706;keyid="testkey-123";tag="example-app"`,
 		},
 		{
 			name: "with_covered_components",
@@ -42,7 +42,7 @@ func TestSigner_marshalText(t *testing.T) {
 				Tag:               "example-app",
 				Created:           time.Date(2024, 01, 03, 04, 05, 06, 00, time.UTC),
 			},
-			want: `("@method" "@target-uri");keyid="testkey-123";alg="ecdsa-p256-sha256";tag="example-app";created=1704254706`,
+			want: `("@method" "@target-uri");alg="ecdsa-p256-sha256";created=1704254706;keyid="testkey-123";tag="example-app"`,
 		},
 		{
 			name: "with_nonce",
@@ -54,7 +54,7 @@ func TestSigner_marshalText(t *testing.T) {
 				Tag:               "example-app",
 				Created:           time.Date(2024, 01, 03, 04, 05, 06, 00, time.UTC),
 			},
-			want: `("@method" "@target-uri");keyid="testkey-123";alg="ecdsa-p256-sha256";tag="example-app";nonce="12345abcdef";created=1704254706`,
+			want: `("@method" "@target-uri");alg="ecdsa-p256-sha256";created=1704254706;keyid="testkey-123";nonce="12345abcdef";tag="example-app"`,
 		},
 	}
 
