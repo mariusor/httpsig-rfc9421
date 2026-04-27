@@ -55,7 +55,7 @@ func TestBase_CanonicalString(t *testing.T) {
 			want: `"@method": POST
 "@target-uri": https://example.com/
 "content-type": application/json
-"@signature-params": ("@method" "@target-uri" "content-type");keyid="testkey-123";alg="ecdsa-p256-sha256";tag="example-app";created=1704254706`,
+"@signature-params": ("@method" "@target-uri" "content-type");alg="ecdsa-p256-sha256";created=1704254706;keyid="testkey-123";tag="example-app"`,
 		},
 		{
 			name: "with_content_length",
@@ -72,7 +72,7 @@ func TestBase_CanonicalString(t *testing.T) {
 				Created:           time.Date(2024, 01, 03, 04, 05, 06, 00, time.UTC),
 			},
 			want: `"content-length": 5
-"@signature-params": ("content-length");keyid="testkey-123";alg="ecdsa-p256-sha256";tag="example-app";created=1704254706`,
+"@signature-params": ("content-length");alg="ecdsa-p256-sha256";created=1704254706;keyid="testkey-123";tag="example-app"`,
 		},
 		{
 			name: "with_content_digest",

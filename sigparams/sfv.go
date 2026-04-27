@@ -2,6 +2,8 @@ package sigparams
 
 import "github.com/dunglas/httpsfv"
 
+var defaultSort = []string{"alg", "created", "expires", "keyid", "nonce", "tag"}
+
 // SFV converts the params to a HTTP structured field value.
 func (p Params) SFV() *httpsfv.InnerList {
 	// Construct the Signature Parameters field (@signature-params)
@@ -15,27 +17,39 @@ func (p Params) SFV() *httpsfv.InnerList {
 		sigParams.Items[i] = httpsfv.NewItem(cc)
 	}
 
-	if p.KeyID != "" {
-		sigParams.Params.Add("keyid", p.KeyID)
-	}
-
-	if p.Alg != "" {
-		sigParams.Params.Add("alg", p.Alg)
-	}
-
-	if p.Tag != "" {
-		sigParams.Params.Add("tag", p.Tag)
-	}
-
-	if p.Nonce != "" {
-		sigParams.Params.Add("nonce", p.Nonce)
-	}
-
-	if !p.Created.IsZero() {
-		sigParams.Params.Add("created", p.Created.Unix())
-	}
-	if !p.Expires.IsZero() {
-		sigParams.Params.Add("expires", p.Expires.Unix())
+	// Using the sort order shown in the initial contents for the "HTTP Signature Metadata Parameters" registry
+	// https://www.rfc-editor.org/rfc/rfc9421.html#name-initial-contents-2
+	for _, param := range defaultSort {
+		var val any
+		switch param {
+		case "alg":
+			if p.Alg != "" {
+				val = p.Alg
+			}
+		case "created":
+			if !p.Created.IsZero() {
+				val = p.Created.Unix()
+			}
+		case "expires":
+			if !p.Expires.IsZero() {
+				val = p.Expires.Unix()
+			}
+		case "keyid":
+			if p.KeyID != "" {
+				val = p.KeyID
+			}
+		case "nonce":
+			if p.Nonce != "" {
+				val = p.Nonce
+			}
+		case "tag":
+			if p.Tag != "" {
+				val = p.Tag
+			}
+		}
+		if val != nil {
+			sigParams.Params.Add(param, val)
+		}
 	}
 
 	return &sigParams
